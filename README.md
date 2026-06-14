@@ -136,9 +136,9 @@ ApexDrive Pro'nun aktif maglev fanlı ve CNC gövdeli termal yapısını test ed
 
 Portal, modern web standartlarına ve performans kurallarına uygun olarak geliştirilmiştir:
 
-*   **Arayüz Yapısı (Core):** [index.html](file:///c:/Users/Batuhan/Desktop/GPY/index.html) - Semantik HTML5 ve optimize edilmiş DOM yönetimi.
-*   **Tasarım Sistemi & CSS:** [styles.css](file:///c:/Users/Batuhan/Desktop/GPY/styles.css) - Premium Vanilla CSS değişkenleri + dinamik yerleşimler için Tailwind CSS (Play CDN). Karanlık ve aydınlık mod tam uyumluluğu.
-*   **İş Mantığı (Logic):** [app.js](file:///c:/Users/Batuhan/Desktop/GPY/app.js) - Vanilla JavaScript (ES6+) ile durum yönetimi (State Management) ve localStorage veri kalıcılığı.
+*   **Arayüz Yapısı (Core):** [index.html](file:///c:/Users/suveyle/Desktop/GPY/index.html) - Semantik HTML5 ve optimize edilmiş DOM yönetimi.
+*   **Tasarım Sistemi & CSS:** [styles.css](file:///c:/Users/suveyle/Desktop/GPY/styles.css) - Premium Vanilla CSS değişkenleri + dinamik yerleşimler için Tailwind CSS (Play CDN). Karanlık ve aydınlık mod tam uyumluluğu.
+*   **İş Mantığı (Logic):** [app.js](file:///c:/Users/suveyle/Desktop/GPY/app.js) - Vanilla JavaScript (ES6+) ile durum yönetimi (State Management) ve localStorage veri kalıcılığı.
 *   **Grafikler & İstatistikler:** Karşılaştırmalı bütçe ve aşama grafiklerinin render edilmesi için **Chart.js**.
 *   **Zaman Çizelgesi & Gantt:** Matematiksel CPM (Kritik Yol Metodu) hesaplamalarını ve SVG tabanlı dinamik çizimleri gerçekleştiren özel Gantt motoru.
 *   **İkon Seti & Tipografi:** FontAwesome 6.4.0 vektörel ikon kütüphanesi ve Google Fonts Outfit yazı tipi.
@@ -216,8 +216,8 @@ Toplam proje bütçesi (₺850.000), aşağıdaki beş ana ekip kaynağına atan
 
 | Çalışan / Ekip | Rol | Günlük Ücret | Planlanan Limit (₺) | Gerçekleşen Harcama (₺) | Durum |
 | :--- | :--- | :---: | :---: | :---: | :---: |
-| **Batuhan Özdoğan** | PM / Proje Yöneticisi | ₺2.500 | ₺120.000 | ₺50.000 | <span style="color:#10b981">● Aktif</span> |
-| **Halil İbrahim Kahraman** | Ar-Ge / Mekanik Tasarım | ₺2.000 | ₺250.000 | ₺150.000 | <span style="color:#10b981">● Aktif</span> |
+| **süveyle bayrak** | PM / Proje Yöneticisi | ₺2.500 | ₺120.000 | ₺50.000 | <span style="color:#10b981">● Aktif</span> |
+| **yardımcı yazılımcı** | Ar-Ge / Mekanik Tasarım | ₺2.000 | ₺250.000 | ₺150.000 | <span style="color:#10b981">● Aktif</span> |
 | **Kıdemli Geliştirici** | Gömülü Yazılım Mühendisi | ₺1.800 | ₺200.000 | ₺80.000 | <span style="color:#10b981">● Aktif</span> |
 | **Donanım Uzmanı** | Donanım / PCB Mühendisi | ₺1.600 | ₺180.000 | ₺100.000 | <span style="color:#10b981">● Aktif</span> |
 | **Pazarlama / Ajans** | Lansman & Pazarlama | ₺1.200 | ₺100.000 | ₺0 | <span style="color:#f59e0b">● Beklemede</span> |
@@ -260,14 +260,6 @@ Proje dosyalarının tarayıcı güvenlik politikalarını (CORS/ES Modülleri v
 
 Portal, tarayıcıda yapılan tüm veri değişikliklerini (yeni görev ekleme, bütçe güncelleme, durum değiştirme, risk/ekip güncellemeleri) otomatik olarak tarayıcının `localStorage` nesnesinde yedekler.
 
-> [!TIP]
-> Eğer yeni güncellemelerin veya şablon değişikliklerinin tarayıcınızda görünmediğini fark ederseniz:
-> [app.js](file:///c:/Users/Batuhan/Desktop/GPY/app.js) dosyasındaki `CURRENT_DATA_VERSION` sürüm kodunu güncelleyebilirsiniz. Bu işlem, tarayıcının eski yerel depolama önbelleğini otomatik olarak temizleyerek en güncel şablon verilerinin yüklenmesini sağlar.
+>
 
----
 
-## 👨‍💻 Proje Ekibi ve Katkıda Bulunanlar
-
-*   **Batuhan Özdoğan** - *Proje Yöneticisi & Baş Geliştirici*
-*   **Halil İbrahim Kahraman** - *Ar-Ge & Mekanik Tasarım Lideri*
->>>>>>> 5b20e85 (fix folder structure)
