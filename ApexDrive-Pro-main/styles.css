@@ -1,0 +1,255 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --primary: #2563eb;
+    --primary-light: #dbeafe;
+    --primary-dark: #1d4ed8;
+    --bg-main: #f8fafc;
+    --card-bg: #ffffff;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    --grid-line: #e2e8f0;
+    --text-label: #1e293b;
+    --text-sub: #64748b;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --critical: #dc2626;
+    --font-outfit: 'Outfit', sans-serif;
+    
+    /* Neon Color Variables for Gantt Chart */
+    --neon-blue: #38bdf8;
+    --neon-purple: #c084fc;
+    --neon-pink: #f472b6;
+    --neon-orange: #fb923c;
+    --neon-green: #a3e635;
+    --neon-emerald: #34d399;
+    --neon-critical: #ef4444;
+
+    /* Gantt Responsive Theme Variables (Light mode) */
+    --gantt-bg: #ffffff;
+    --gantt-header-bg: #f8fafc;
+    --gantt-border: #e2e8f0;
+    --gantt-grid: #f1f5f9;
+    --gantt-text-muted: #64748b;
+    --gantt-row-hover: rgba(241, 245, 249, 0.8);
+}
+
+.dark {
+    --bg-main: #020617; /* Slate 950 deep dark */
+    --card-bg: #0b1329; /* Deep dark blue-grey card */
+    --text-main: #f8fafc; /* Slate 50 */
+    --text-muted: #94a3b8; /* Slate 400 */
+    --border-color: #1e293b; /* Slate 800 */
+    --grid-line: #1e293b; /* Slate 800 */
+    --text-label: #cbd5e1; /* Slate 300 */
+    --text-sub: #64748b; /* Slate 500 */
+    --primary-light: #0f172a;
+    --primary-dark: #3b82f6;
+
+    /* Gantt Responsive Theme Variables (Dark mode) */
+    --gantt-bg: #000000;
+    --gantt-header-bg: #090d16;
+    --gantt-border: #1e293b;
+    --gantt-grid: #1e293b;
+    --gantt-text-muted: #71717a;
+    --gantt-row-hover: rgba(30, 41, 59, 0.4);
+}
+
+body {
+    font-family: var(--font-outfit);
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    overflow-x: hidden;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: #475569;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+}
+
+/* Sidebar Styling */
+.sidebar-item {
+    transition: all 0.2s ease-in-out;
+}
+.sidebar-item.active {
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+    font-weight: 600;
+}
+
+/* Gantt Split Pane Layout - Theme-Responsive */
+.gantt-split-container {
+    display: flex;
+    border: 1px solid var(--gantt-border) !important;
+    border-radius: 16px;
+    overflow: hidden;
+    background-color: var(--gantt-bg) !important;
+    height: 580px;
+}
+
+.gantt-left-panel {
+    width: 480px;
+    flex-shrink: 0;
+    border-right: 1px solid var(--gantt-border) !important;
+    overflow-y: hidden; /* Scroll synchronized with right panel */
+    background-color: var(--gantt-bg) !important;
+    scrollbar-width: none; /* Firefox */
+}
+
+.gantt-left-panel::-webkit-scrollbar {
+    display: none; /* Safari/Chrome */
+}
+
+.gantt-left-header {
+    height: 40px;
+    background-color: var(--gantt-header-bg) !important;
+    border-bottom: 1px solid var(--gantt-border) !important;
+    color: var(--gantt-text-muted) !important;
+}
+
+/* Tree row styling */
+.gantt-left-row {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    padding-left: 16px;
+    padding-right: 16px;
+    border-bottom: 1px solid var(--gantt-border);
+    font-size: 12px;
+    transition: background-color 0.15s;
+    background-color: var(--gantt-bg);
+    min-width: 100%;
+    width: max-content;
+}
+
+#gantt-left-rows {
+    overflow-x: auto;
+    overflow-y: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+
+#gantt-left-rows::-webkit-scrollbar {
+    height: 6px;
+    width: 0px; /* Hide vertical scrollbar */
+}
+
+#gantt-left-rows::-webkit-scrollbar-thumb {
+    background: #475569;
+    border-radius: 4px;
+}
+
+#gantt-left-rows::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+}
+
+.gantt-left-row:hover {
+    background-color: var(--gantt-row-hover) !important;
+}
+
+.tree-indent {
+    display: inline-block;
+    width: 16px;
+    flex-shrink: 0;
+}
+
+/* Glassmorphism details */
+.glass-panel {
+    background: rgba(11, 19, 41, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Gantt Chart Custom SVG styles */
+.gantt-right-panel {
+    background-color: var(--gantt-bg) !important;
+}
+.gantt-right-header {
+    height: 40px;
+    background-color: var(--gantt-header-bg) !important;
+    border-bottom: 1px solid var(--gantt-border) !important;
+}
+.gantt-svg {
+    user-select: none;
+    background-color: var(--gantt-bg) !important;
+}
+.gantt-grid-line {
+    stroke: var(--gantt-grid) !important;
+    stroke-width: 1;
+}
+.gantt-grid-line-weekend {
+    stroke: var(--gantt-grid) !important;
+    opacity: 0.1;
+}
+.gantt-row-bg {
+    fill: transparent;
+    transition: fill 0.2s;
+}
+.gantt-row-bg:hover {
+    fill: var(--gantt-row-hover);
+}
+.gantt-bar {
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+.gantt-bar:hover {
+    opacity: 0.85;
+}
+.gantt-text {
+    font-size: 11px;
+    font-weight: 500;
+    pointer-events: none;
+}
+.gantt-dep-line {
+    display: none; /* Dependency lines completely hidden in mockup */
+}
+
+/* Custom Tooltip */
+.gantt-tooltip {
+    position: absolute;
+    background: rgba(11, 19, 41, 0.95);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    pointer-events: none;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    z-index: 100;
+    max-width: 250px;
+    line-height: 1.4;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* Card hovering */
+.hover-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hover-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 20px -8px rgba(0, 0, 0, 0.08);
+}

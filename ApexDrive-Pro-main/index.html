@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>taskmaster pro – Proje Yönetim Portalı</title>
+    
+    <!-- Tailwind CSS Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- FontAwesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-slate-50 dark:bg-zinc-950 text-slate-900 dark:text-zinc-100 font-sans antialiased">
+
+    <!-- App Container -->
+    <div class="min-h-screen flex flex-col md:flex-row">
+        
+        <!-- Sidebar Menu (Sol Menü) -->
+        <aside class="w-full md:w-72 bg-white dark:bg-zinc-900 border-r border-slate-200 dark:border-zinc-800 flex flex-col justify-between shrink-0 z-20">
+            <div>
+                <!-- Brand Logo / Title -->
+                <div class="p-6 border-b border-slate-100 dark:border-zinc-800 flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-primary-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary-200">
+                        <i class="fa-solid fa-microchip text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold tracking-tight text-slate-800 dark:text-zinc-100">ApexDrive Pro</h1>
+                        <span class="text-xs font-semibold text-primary-600 tracking-wider uppercase">Proje Yönetimi</span>
+                    </div>
+                </div>
+                
+                <!-- Menu Links -->
+                <nav class="p-4 space-y-1.5" id="sidebar-menu">
+                    <button data-tab="dashboard" class="sidebar-item active w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-left text-sm text-slate-600 dark:text-zinc-400 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-zinc-800 dark:hover:text-primary-400">
+                        <i class="fa-solid fa-chart-pie w-5 text-center text-base"></i>
+                        <span>Dashboard</span>
+                    </button>
+                    <button data-tab="gantt" class="sidebar-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-left text-sm text-slate-600 dark:text-zinc-400 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-zinc-800 dark:hover:text-primary-400">
+                        <i class="fa-solid fa-timeline w-5 text-center text-base"></i>
+                        <span>Gantt Şeması</span>
+                    </button>
+                    <button data-tab="kanban" class="sidebar-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-left text-sm text-slate-600 dark:text-zinc-400 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-zinc-800 dark:hover:text-primary-400">
+                        <i class="fa-solid fa-table-columns w-5 text-center text-base"></i>
+                        <span>Kanban Board</span>
+                    </button>
+                    <button data-tab="tasks" class="sidebar-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-left text-sm text-slate-600 dark:text-zinc-400 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-zinc-800 dark:hover:text-primary-400">
+                        <i class="fa-solid fa-list-check w-5 text-center text-base"></i>
+                        <span>Görev Listesi</span>
+                    </button>
+                    <button data-tab="team" class="sidebar-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-left text-sm text-slate-600 dark:text-zinc-400 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-zinc-800 dark:hover:text-primary-400">
+                        <i class="fa-solid fa-users w-5 text-center text-base"></i>
+                        <span>Ekip Yönetimi</span>
+                    </button>
+                    <button data-tab="budget" class="sidebar-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-left text-sm text-slate-600 dark:text-zinc-400 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-zinc-800 dark:hover:text-primary-400">
+                        <i class="fa-solid fa-wallet w-5 text-center text-base"></i>
+                        <span>Bütçe Takibi</span>
+                    </button>
+                    <button data-tab="risk" class="sidebar-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-left text-sm text-slate-600 dark:text-zinc-400 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-zinc-800 dark:hover:text-primary-400">
+                        <i class="fa-solid fa-triangle-exclamation w-5 text-center text-base"></i>
+                        <span>Risk Kaydı</span>
+                    </button>
+                    <button data-tab="milestones" class="sidebar-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-left text-sm text-slate-600 dark:text-zinc-400 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-zinc-800 dark:hover:text-primary-400">
+                        <i class="fa-solid fa-flag w-5 text-center text-base"></i>
+                        <span>Milestones</span>
+                    </button>
+                    <button data-tab="production" class="sidebar-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-left text-sm text-slate-600 dark:text-zinc-400 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-zinc-800 dark:hover:text-primary-400">
+                        <i class="fa-solid fa-server w-5 text-center text-base"></i>
+                        <span>Donanım Vitrini & Testler</span>
+                    </button>
+                    <button data-tab="backlog" class="sidebar-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-left text-sm text-slate-600 dark:text-zinc-400 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-zinc-800 dark:hover:text-primary-400">
+                        <i class="fa-solid fa-cubes w-5 text-center text-base"></i>
+                        <span>Jira Backlog Verisi</span>
+                    </button>
+                </nav>
+            </div>
+            
+            <!-- User Profile footer in Sidebar -->
+            <div class="p-4 border-t border-slate-100 dark:border-zinc-800 bg-slate-50/50 dark:bg-zinc-950/50">
+                <div class="flex items-center space-x-3">
+                    <img class="w-10 h-10 rounded-full border border-slate-200 dark:border-zinc-700 object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100" alt="Profil">
+                    <div class="flex-1 min-w-0">
+                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Hoş Geldiniz</p>
+                        <p class="text-sm font-bold text-slate-800 dark:text-zinc-200 truncate" id="current-user-name">Proje Yöneticisi</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Main Content Area -->
+        <main class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+            
+            <!-- Top Navbar -->
+            <header class="bg-white dark:bg-zinc-900 border-b border-slate-200 dark:border-zinc-800 h-16 shrink-0 flex items-center justify-between px-6 md:px-8">
+                <!-- Left: Title or Info -->
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-slate-500 dark:text-zinc-400 font-medium hidden md:inline">Proje Durumu: <span class="text-success font-semibold px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/30 text-xs">Aktif</span></span>
+                </div>
+                
+                <!-- Right: Date and quick stats -->
+                <div class="flex items-center space-x-4 text-sm text-slate-600 dark:text-zinc-300">
+                    <!-- Theme Toggle Button -->
+                    <button id="theme-toggle" class="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-slate-600 dark:text-zinc-300 flex items-center justify-center transition duration-150 shadow-sm" title="Karanlık Modu Aç/Kapat">
+                        <i class="fa-solid fa-moon dark:hidden"></i>
+                        <i class="fa-solid fa-sun hidden dark:inline"></i>
+                    </button>
+                    <span class="h-4 w-px bg-slate-200 dark:bg-zinc-800"></span>
+                    <div class="flex items-center space-x-1.5">
+                        <i class="fa-regular fa-calendar text-slate-400 dark:text-zinc-500"></i>
+                        <span id="header-date" class="font-medium">9 Haziran 2026</span>
+                    </div>
+                    <span class="h-4 w-px bg-slate-200 dark:bg-zinc-800"></span>
+                    <div class="flex items-center space-x-1.5 bg-slate-100 dark:bg-zinc-800 px-3 py-1 rounded-full text-xs font-semibold text-slate-700 dark:text-zinc-300">
+                        <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+                        <span>Canlı Veri</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Container (Tab-based SPA switcher) -->
+            <div class="p-6 md:p-8 flex-1">
+                
+                <!-- TAB 1: Ana Sayfa & Analiz -->
+                <div id="tab-dashboard" class="tab-content animate-fade-in space-y-8">
+                    <!-- Heading -->
+                    <div>
+                        <h2 class="text-3xl font-extrabold text-slate-900 dark:text-zinc-100 tracking-tight" id="dashboard-title">ApexDrive Pro – Proje Yönetim Portalı</h2>
+                        <p class="text-slate-500 dark:text-zinc-400 mt-2 max-w-3xl leading-relaxed text-base" id="dashboard-subtitle">
+                            ApexDrive Pro Next-Gen Thunderbolt 4 Hub & NVMe SSD geliştirme ve lansman projesinin kapsam, zaman, bütçe, risk, kaynak ve kalite yönetiminin gerçekleştirildiği proje yönetim portalı.
+                        </p>
+                    </div>
+                    
+                    <!-- KPI Cards (Gösterge Kartları) -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <!-- KPI 1 -->
+                        <div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-slate-100 dark:border-zinc-800/80 shadow-sm hover-card flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 rounded-xl flex items-center justify-center text-xl shrink-0">
+                                <i class="fa-regular fa-clock"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-zinc-500">Toplam Proje Süresi</p>
+                                <p class="text-2xl font-bold text-slate-900 dark:text-zinc-100 mt-1" id="kpi-duration">11 Saat</p>
+                                <p class="text-xs text-slate-400 dark:text-zinc-500 mt-0.5">Kritik yol dahil süre</p>
+                            </div>
+                        </div>
+                        
+                        <!-- KPI 2 -->
+                        <div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-slate-100 dark:border-zinc-800/80 shadow-sm hover-card flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 rounded-xl flex items-center justify-center text-xl shrink-0">
+                                <i class="fa-solid fa-arrows-spin"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-zinc-500">Proje Faz Sayısı</p>
+                                <p class="text-2xl font-bold text-slate-900 dark:text-zinc-100 mt-1" id="kpi-stages">4 Faz</p>
+                                <p class="text-xs text-slate-400 dark:text-zinc-500 mt-0.5">Ana proje aşamaları</p>
+                            </div>
+                        </div>
+
+                        <!-- KPI 3 -->
+                        <div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-slate-100 dark:border-zinc-800/80 shadow-sm hover-card flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 rounded-xl flex items-center justify-center text-xl shrink-0">
+                                <i class="fa-solid fa-list-check"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-zinc-500">Toplam Görev</p>
+                                <p class="text-2xl font-bold text-slate-900 dark:text-zinc-100 mt-1" id="kpi-tasks">9 Görev</p>
+                                <p class="text-xs text-slate-400 dark:text-zinc-500 mt-0.5">
+                                    <span class="text-emerald-650 dark:text-emerald-400 font-semibold"><span id="kpi-tasks-completed">0</span> Bitti</span> / 
+                                    <span class="text-blue-600 dark:text-blue-400 font-semibold"><span id="kpi-tasks-in-progress">0</span> Aktif</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- KPI 4 -->
+                        <div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-slate-100 dark:border-zinc-800/80 shadow-sm hover-card flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 rounded-xl flex items-center justify-center text-xl shrink-0">
+                                <i class="fa-solid fa-turkish-lira-sign"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-zinc-500">Toplam Bütçe</p>
+                                <div class="flex items-center space-x-2 mt-1">
+                                    <p class="text-2xl font-bold text-slate-900 dark:text-zinc-100" id="kpi-budget">₺850.000</p>
+                                    <button onclick="editProjectTotalBudget()" class="text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 transition" title="Bütçeyi Düzenle">
+                                        <i class="fa-solid fa-pen-to-square text-sm"></i>
+                                    </button>
+                                </div>
+                                <p class="text-xs text-slate-400 dark:text-zinc-500 mt-0.5">Harcanan: <span class="font-bold text-rose-600 dark:text-rose-400" id="kpi-spent-budget">₺0</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Genel Proje İlerlemesi Widget -->
+                    <div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-slate-100 dark:border-zinc-800/80 shadow-sm flex flex-col justify-between animate-fade-in">
+                        <div class="flex items-center justify-between mb-3">
+                            <div>
+                                <h3 class="font-bold text-slate-800 dark:text-zinc-200 text-sm">Genel Proje İlerlemesi</h3>
+                                <p class="text-xs text-slate-400 dark:text-zinc-500">WBS görev ağırlıklarına (sürelerine) göre hesaplanan tamamlanma yüzdesi.</p>
+                            </div>
+                            <span class="text-base font-extrabold text-blue-600 dark:text-blue-400" id="kpi-progress-percent">0%</span>
+                        </div>
+                        <div class="w-full bg-slate-100 dark:bg-zinc-800 rounded-full h-2.5 overflow-hidden">
+                            <div class="bg-gradient-to-r from-blue-500 to-indigo-600 h-full rounded-full transition-all duration-500" id="kpi-progress-bar" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Row -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Chart 1: Üretim Aşamaları Görev Dağılımı -->
+                        <div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-slate-200/80 dark:border-zinc-800 shadow-sm">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="font-bold text-slate-800 dark:text-zinc-200 text-base">Proje Fazları Süre ve Durumu</h3>
+                                <span class="text-xs bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400 font-semibold px-2.5 py-1 rounded-md">İş Kırılımı</span>
+                            </div>
+                            <div class="relative h-72">
+                                <canvas id="chart-stages"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Chart 2: Ekip Çalışma Süresi ve Bütçe Dağılımı -->
+                        <div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-slate-200/80 dark:border-zinc-800 shadow-sm">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="font-bold text-slate-800 dark:text-zinc-200 text-base">Ekip Çalışma Süresi ve Bütçe Dağılımı</h3>
+                                <span class="text-xs bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400 font-semibold px-2.5 py-1 rounded-md">Kaynak Dağılımı</span>
+                            </div>
+                            <div class="relative h-72">
+                                <canvas id="chart-team"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Q&A Box / Proje Yönetim Yazılımı Analizi -->
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-zinc-900 dark:to-slate-900/60 border border-blue-100 dark:border-zinc-800 p-6 rounded-2xl">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-10 h-10 bg-blue-600 dark:bg-blue-800 text-white rounded-lg flex items-center justify-center shrink-0 shadow-md">
+                                <i class="fa-solid fa-lightbulb"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-800 dark:text-zinc-200 text-base">Proje Yönetim Metodolojisi & Kılavuzu</h4>
+                                <div class="mt-3 bg-white/70 dark:bg-zinc-950/70 p-4 rounded-xl border border-blue-100/60 dark:border-zinc-800/80">
+                                    <p class="text-sm font-semibold text-slate-800 dark:text-zinc-200">Soru:</p>
+                                    <p class="text-sm text-slate-700 dark:text-zinc-300 italic mt-0.5">"ApexDrive Pro NVMe SSD & Thunderbolt 4 Hub geliştirme projemiz için hangi proje yönetim yazılımı ve metodolojisini kullanmalıyım?"</p>
+                                </div>
+                                <div class="mt-3 bg-blue-600 dark:bg-blue-800 text-white p-4 rounded-xl shadow-sm">
+                                    <p class="text-sm font-semibold">Cevap:</p>
+                                    <p class="text-sm text-blue-55 dark:text-zinc-200 leading-relaxed mt-1">
+                                        Donanım ve gömülü yazılım entegrasyonu içeren bu hibrit projede; donanım tasarımı ve CNC kalıp aşamaları için şelale (Waterfall) metodolojisi, firmware ve lansman aşamaları için ise çevik (Agile/Scrum) metodolojileri hibrit olarak uygulanmalıdır. Zaman kısıtları, kaynak verimliliği ve kritik yol (Critical Path) takibi için MS Project veya Jira Gantt eklentileri tercih edilmelidir.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: Gantt Zaman Tüneli -->
+                <div id="tab-gantt" class="tab-content animate-fade-in hidden space-y-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900 dark:text-zinc-100 tracking-tight">ApexDrive Pro Proje Planı Gantt Şeması</h2>
+                        <p class="text-slate-500 dark:text-zinc-400 mt-1 text-sm">İş Kırılım Yapısı (WBS) hiyerarşisi, görev süreleri, bağımlılıklar ve kritik yol analizi zaman çizelgesi.</p>
+                    </div>
+
+                    <!-- Gantt Options/Legend Panel -->
+                    <div class="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-xl p-4 flex flex-wrap items-center justify-between gap-4">
+                        <div class="flex flex-wrap gap-4 text-xs font-semibold text-slate-600 dark:text-zinc-400">
+                            <div class="flex items-center space-x-2">
+                                <span class="w-4 h-3 bg-indigo-500 rounded border border-indigo-600 shadow-[0_0_6px_rgba(168,85,247,0.4)]"></span>
+                                <span>Ana Özet Çubuğu</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="w-4 h-3 bg-blue-500 rounded border border-blue-600 shadow-[0_0_6px_rgba(56,189,248,0.4)]"></span>
+                                <span>Normal Görev</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="w-4 h-3 bg-red-500 rounded border border-red-600 shadow-[0_0_6px_rgba(239,68,68,0.4)]"></span>
+                                <span>Kritik Yol (Kırmızı)</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-3 h-3 bg-yellow-500 rotate-45 border border-yellow-600"></div>
+                                <span>Milestone (Dönüm Noktası)</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xs font-medium text-slate-500 dark:text-zinc-400">Ölçek:</span>
+                            <span class="text-xs font-bold text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-950/40 px-2.5 py-1 rounded-md">Günlük Ölçek (Proje Süresi)</span>
+                        </div>
+                    </div>
+
+                    <!-- Gantt Split Pane Layout -->
+                    <div class="gantt-split-container flex relative shadow-lg">
+                        
+                        <!-- Left Panel: Hierarchical Task Tree (WBS) -->
+                        <div class="gantt-left-panel flex flex-col" id="gantt-left-panel">
+                            <!-- Left Header (40px) -->
+                            <div class="gantt-left-header flex items-center px-4 text-[10px] font-bold uppercase tracking-wider shrink-0 select-none">
+                                <div class="w-[280px] shrink-0">İş Kırılımı / Görev Adı</div>
+                                <div class="w-[50px] shrink-0 text-center">Süre</div>
+                                <div class="w-[118px] shrink-0 text-right">Sorumlu</div>
+                            </div>
+                            <!-- Left Rows Body -->
+                            <div class="flex-grow overflow-y-hidden" id="gantt-left-rows">
+                                <!-- Populated dynamically by app.js -->
+                            </div>
+                        </div>
+                        
+                        <!-- Right Panel: Scrollable SVG Timeline -->
+                        <div class="gantt-right-panel flex-grow flex flex-col overflow-hidden" id="gantt-right-panel">
+                            <!-- Right Header Viewport (40px) -->
+                            <div class="gantt-right-header overflow-hidden shrink-0" id="gantt-header-viewport">
+                                <!-- Dynamic Header SVG (hours/dates) -->
+                            </div>
+                            
+                            <!-- Right Body Viewport -->
+                            <div class="flex-grow overflow-auto" id="gantt-body-viewport">
+                                <div id="gantt-chart-wrapper" class="relative">
+                                    <!-- Dynamic Body SVG (bars, connections) -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 3: Tüm Görevler Sayfası -->
+                <div id="tab-tasks" class="tab-content animate-fade-in hidden space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <h2 class="text-2xl font-bold text-slate-900 dark:text-zinc-100 tracking-tight">Üretim Görevleri Takip Tablosu</h2>
+                            <p class="text-slate-500 dark:text-zinc-400 mt-1 text-sm">Üretim aşamaları bazında görevlerin durumlarını, sürelerini ve sorumlularını yönetin.</p>
+                        </div>
+                        <button onclick="openTaskModal()" class="bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition duration-150 flex items-center space-x-2 shadow-md shadow-primary-200">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>Yeni Görev Ekle</span>
+                        </button>
+                    </div>
+
+                    <!-- Tasks Table Container -->
+                    <div class="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl shadow-sm overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50 dark:bg-zinc-800/50 border-b border-slate-200 dark:border-zinc-800 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-zinc-400">
+                                        <th class="px-6 py-4">Üretim Aşaması / Görev</th>
+                                        <th class="px-6 py-4">Sorumlu</th>
+                                        <th class="px-6 py-4">Süre</th>
+                                        <th class="px-6 py-4">Bağımlılık</th>
+                                        <th class="px-6 py-4 text-center">Milestone</th>
+                                        <th class="px-6 py-4">Öncelik</th>
+                                        <th class="px-6 py-4">Durum</th>
+                                        <th class="px-6 py-4 text-right">İşlemler</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100 dark:divide-zinc-800 text-sm text-slate-700 dark:text-zinc-300" id="tasks-table-body">
+                                    <!-- Dynamic rows loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 4: Proje Ekibi Sayfası -->
+                <div id="tab-team" class="tab-content animate-fade-in hidden space-y-8">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900 dark:text-zinc-100 tracking-tight">Proje Ekip Yönetimi</h2>
+                        <p class="text-slate-500 dark:text-zinc-400 mt-1 text-sm">Ekip personelinin günlük ücretleri, atanan görev sayıları, çalışma süreleri ve bütçe kırılımları.</p>
+                    </div>
+
+                    <!-- Team Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="team-grid">
+                        <!-- Dynamic team cards loaded here -->
+                    </div>
+
+                    <!-- Team Summary Table -->
+                    <div class="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl shadow-sm overflow-hidden">
+                        <div class="p-5 border-b border-slate-100 dark:border-zinc-800 flex justify-between items-center bg-slate-50/50 dark:bg-zinc-850/30">
+                            <h3 class="font-bold text-slate-800 dark:text-zinc-200 text-sm uppercase tracking-wider">Ekip Maliyet & Verimlilik Özeti</h3>
+                            <span class="text-xs bg-primary-100 dark:bg-primary-950/40 text-primary-700 dark:text-primary-400 font-bold px-3 py-1 rounded-full" id="team-total-cost-badge">Toplam Maliyet: ₺0</span>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50 dark:bg-zinc-800/50 border-b border-slate-200 dark:border-zinc-800 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-zinc-400">
+                                        <th class="px-6 py-4">Ekip Üyesi</th>
+                                        <th class="px-6 py-4">Rol</th>
+                                        <th class="px-6 py-4 text-center">Kaynak Durumu</th>
+                                        <th class="px-6 py-4 text-right">Günlük Ücret (₺)</th>
+                                        <th class="px-6 py-4 text-center">Atanan Görev (Süre)</th>
+                                        <th class="px-6 py-4 text-right">Planlanan Bütçe (₺)</th>
+                                        <th class="px-6 py-4 text-right">Harcanan Bütçe (₺)</th>
+                                        <th class="px-6 py-4 text-right">Kalan Limit (₺)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100 dark:divide-zinc-800 text-sm text-slate-700 dark:text-zinc-300" id="team-summary-table-body">
+                                    <!-- Dynamic rows loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 6: Bütçe Takibi Sayfası -->
+                <div id="tab-budget" class="tab-content animate-fade-in hidden space-y-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900 dark:text-zinc-100 tracking-tight">Bütçe Takibi</h2>
+                        <p class="text-slate-500 dark:text-zinc-400 mt-1 text-sm">Planlanan ve gerçekleşen maliyetler.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Left Box: Column/Bar Chart (Sütun Grafiği) -->
+                        <div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-slate-200/80 dark:border-zinc-800 shadow-sm flex flex-col justify-between animate-fade-in">
+                            <div>
+                                <h3 class="font-bold text-slate-800 dark:text-zinc-200 text-base mb-1">Maliyet Karşılaştırması</h3>
+                                <p class="text-xs text-slate-400 dark:text-zinc-500 mb-4">Aşama bazında planlanan ve gerçekleşen harcamalar.</p>
+                            </div>
+                            <div class="relative h-80 w-full flex items-center justify-center">
+                                <canvas id="chart-budget-comparison"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Right Box: Kategori Dağılımı (Category Distribution) -->
+                        <div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-slate-200/80 dark:border-zinc-800 shadow-sm flex flex-col justify-between animate-fade-in">
+                            <div>
+                                <h3 class="font-bold text-slate-800 dark:text-zinc-200 text-base mb-1">Kategori Dağılımı</h3>
+                                <p class="text-xs text-slate-400 dark:text-zinc-500 mb-4">Aşama detaylı harcama durumları.</p>
+                            </div>
+                            <div class="space-y-4 overflow-y-auto max-h-[320px] pr-2" id="budget-category-list">
+                                <!-- Dynamic category list items go here -->
+                            </div>
+                            <div class="border-t border-slate-100 dark:border-zinc-800 pt-4 mt-4 space-y-2">
+                                <div class="flex justify-between items-center">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-xs text-slate-400 dark:text-zinc-500 font-bold uppercase tracking-wider">Toplam Bütçe</span>
+                                        <button onclick="editProjectTotalBudget()" class="text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 transition" title="Bütçeyi Düzenle">
+                                            <i class="fa-solid fa-pen-to-square text-xs"></i>
+                                        </button>
+                                    </div>
+                                    <span class="font-bold text-slate-900 dark:text-zinc-100 text-base" id="budget-page-total-budget">0 ₺</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs text-slate-400 dark:text-zinc-500 font-bold uppercase tracking-wider">Toplam Harcanan</span>
+                                    <span class="font-bold text-slate-900 dark:text-zinc-100 text-base" id="budget-total-spent">0 ₺</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 7: Kanban Board Sayfası -->
+                <div id="tab-kanban" class="tab-content animate-fade-in hidden space-y-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900 dark:text-zinc-100 tracking-tight">Kanban Board</h2>
+                        <p class="text-slate-500 dark:text-zinc-400 mt-1 text-sm">Görevleri durumlarına göre sürükle-bırak tadında interaktif sütunlarda izleyin.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Column 1: Bekliyor -->
+                        <div class="bg-slate-100/60 dark:bg-zinc-900/60 p-4 rounded-2xl border border-slate-200/50 dark:border-zinc-800 flex flex-col h-[600px]">
+                            <div class="flex items-center justify-between mb-3 px-1">
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+                                    <h3 class="font-bold text-slate-800 dark:text-zinc-200 text-sm">Bekliyor</h3>
+                                </div>
+                                <span class="bg-slate-200 dark:bg-zinc-800 text-slate-650 dark:text-zinc-400 text-xs font-bold px-2 py-0.5 rounded-full" id="kanban-todo-count">0</span>
+                            </div>
+                            <div class="flex-grow overflow-y-auto space-y-3 pr-1" id="kanban-todo-list">
+                                <!-- Kanban cards loaded dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Column 2: Devam Ediyor -->
+                        <div class="bg-blue-50/30 dark:bg-blue-950/10 p-4 rounded-2xl border border-blue-100/50 dark:border-blue-900/30 flex flex-col h-[600px]">
+                            <div class="flex items-center justify-between mb-3 px-1">
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse"></span>
+                                    <h3 class="font-bold text-slate-800 dark:text-zinc-200 text-sm">Devam Ediyor</h3>
+                                </div>
+                                <span class="bg-blue-100 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 text-xs font-bold px-2 py-0.5 rounded-full" id="kanban-progress-count">0</span>
+                            </div>
+                            <div class="flex-grow overflow-y-auto space-y-3 pr-1" id="kanban-progress-list">
+                                <!-- Kanban cards loaded dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Column 3: Tamamlandı -->
+                        <div class="bg-emerald-50/30 dark:bg-emerald-950/10 p-4 rounded-2xl border border-emerald-100/50 dark:border-emerald-900/30 flex flex-col h-[600px]">
+                            <div class="flex items-center justify-between mb-3 px-1">
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                                    <h3 class="font-bold text-slate-800 dark:text-zinc-200 text-sm">Tamamlandı</h3>
+                                </div>
+                                <span class="bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 text-xs font-bold px-2 py-0.5 rounded-full" id="kanban-done-count">0</span>
+                            </div>
+                            <div class="flex-grow overflow-y-auto space-y-3 pr-1" id="kanban-done-list">
+                                <!-- Kanban cards loaded dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 8: Risk Kaydı Sayfası -->
+                <div id="tab-risk" class="tab-content animate-fade-in hidden space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <h2 class="text-2xl font-bold text-slate-900 dark:text-zinc-100 tracking-tight">Risk Kaydı (Risk Register)</h2>
+                            <p class="text-slate-500 dark:text-zinc-400 mt-1 text-sm">Üretim sürecinde karşılaşılabilecek risklerin takibi, olasılık analizleri ve eylem planları.</p>
+                        </div>
+                        <button onclick="openRiskModal()" class="bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition duration-150 flex items-center space-x-2 shadow-md shadow-primary-200">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>Yeni Risk Ekle</span>
+                        </button>
+                    </div>
+
+                    <div class="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl shadow-sm overflow-hidden animate-fade-in">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50 dark:bg-zinc-800/50 border-b border-slate-200 dark:border-zinc-800 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-zinc-400">
+                                        <th class="px-6 py-4">Risk Kodu</th>
+                                        <th class="px-6 py-4">Açıklama / Tanım</th>
+                                        <th class="px-6 py-4">Olasılık</th>
+                                        <th class="px-6 py-4">Etki Derecesi</th>
+                                        <th class="px-6 py-4">Önlem Planı</th>
+                                        <th class="px-6 py-4">Durum</th>
+                                        <th class="px-6 py-4 text-right">İşlemler</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100 dark:divide-zinc-800 text-sm text-slate-700 dark:text-zinc-300" id="risk-table-body">
+                                    <!-- Dynamic rows loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 9: Milestones Sayfası -->
+                <div id="tab-milestones" class="tab-content animate-fade-in hidden space-y-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900 dark:text-zinc-100 tracking-tight">Proje Dönüm Noktaları (Milestones)</h2>
+                        <p class="text-slate-500 dark:text-zinc-400 mt-1 text-sm">Üretim aşamalarındaki kritik hedefler ve bu hedeflerin teslimat zaman çizgisi.</p>
+                    </div>
+
+                    <div class="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl p-8 shadow-sm flex flex-col justify-between animate-fade-in">
+                        <div class="relative pl-8 border-l border-slate-200 dark:border-zinc-850 space-y-8" id="milestones-timeline-wrapper">
+                            <!-- Dynamic milestones timeline loaded here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 10: Donanım Vitrini & Kalite Testleri -->
+                <div id="tab-production" class="tab-content animate-fade-in hidden space-y-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900 dark:text-zinc-100 tracking-tight">Donanım Vitrini & Kalite Testleri</h2>
+                        <p class="text-slate-500 dark:text-zinc-400 mt-1 text-sm">ApexDrive Pro donanım bileşenleri, teknik özellikleri ve canlı stres testleri.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Production Telemetry -->
+                        <div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-slate-200 dark:border-zinc-800 shadow-sm col-span-2 flex flex-col justify-between animate-fade-in">
+                            <div>
+                                <h3 class="font-bold text-slate-800 dark:text-zinc-200 text-base mb-1">Hub Donanım ve Sensör Telemetrisi</h3>
+                                <p class="text-xs text-slate-400 dark:text-zinc-500 mb-6">Entegre sensörlerden alınan canlı donanım durumu.</p>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Thunderbolt 4 Controller -->
+                                <div class="bg-slate-50 dark:bg-zinc-950/60 p-4 rounded-xl border border-slate-100 dark:border-zinc-850/50">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <span class="font-bold text-slate-700 dark:text-zinc-300 text-sm">Thunderbolt 4 Denetleyici</span>
+                                        <span class="px-2 py-0.5 text-[10px] font-bold bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1 animate-pulse"></span>Aktif</span>
+                                    </div>
+                                    <div class="space-y-2.5 text-xs text-slate-500 dark:text-zinc-400">
+                                        <div class="flex justify-between"><span>Veri Yolu Bant Genişliği</span><span class="font-bold text-slate-800 dark:text-zinc-200">40 Gbps (Dual Port)</span></div>
+                                        <div class="flex justify-between"><span>Güç Dağıtımı (PD 3.0)</span><span class="font-bold text-slate-800 dark:text-zinc-200">100 W (Maksimum)</span></div>
+                                        <div class="flex justify-between"><span>Sinyal Bütünlüğü (Jitter)</span><span class="font-bold text-slate-800 dark:text-zinc-200">&lt; 15 ps</span></div>
+                                    </div>
+                                </div>
+                                <!-- NVMe SSD Controller -->
+                                <div class="bg-slate-50 dark:bg-zinc-950/60 p-4 rounded-xl border border-slate-100 dark:border-zinc-850/50">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <span class="font-bold text-slate-700 dark:text-zinc-300 text-sm">NVMe PCIe Gen4 SSD</span>
+                                        <span class="px-2 py-0.5 text-[10px] font-bold bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1 animate-pulse"></span>Aktif</span>
+                                    </div>
+                                    <div class="space-y-2.5 text-xs text-slate-500 dark:text-zinc-400">
+                                        <div class="flex justify-between"><span>NVMe SSD Sıcaklığı</span><span id="telemetry-temp" class="font-extrabold text-blue-500 dark:text-blue-400">42 °C</span></div>
+                                        <div class="flex justify-between"><span>Maglev Soğutma Fanı</span><span id="telemetry-fan" class="font-extrabold text-slate-650 dark:text-zinc-400">0 RPM (Boşta)</span></div>
+                                        <div class="flex justify-between"><span>Anlık Veri Aktarım Hızı</span><span id="telemetry-speed" class="font-extrabold text-slate-700 dark:text-zinc-300">0 MB/s</span></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Stres Testi Simülatör Kartı -->
+                            <div class="mt-6 p-4 bg-amber-500/5 dark:bg-amber-500/10 rounded-xl border border-amber-500/20">
+                                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                    <div>
+                                        <h4 class="font-bold text-amber-800 dark:text-amber-400 text-sm">Kalite Güvence Stres Testi</h4>
+                                        <p class="text-xs text-slate-500 dark:text-zinc-400 mt-0.5">Sürücü ve termal kontrol mekanizmalarının yük altındaki tepkilerini simüle edin. <span id="simulation-page-info" class="text-amber-600 dark:text-amber-400 ml-1.5 font-bold"></span></p>
+                                    </div>
+                                    <div class="flex items-center space-x-3">
+                                        <button onclick="simulateStressTest()" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-lg text-xs transition shadow-sm">
+                                            <i class="fa-solid fa-gauge-high mr-1.5"></i>Stres Testi Başlat
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Technical Specs Matrix -->
+                        <div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-slate-200 dark:border-zinc-800 shadow-sm flex flex-col justify-between animate-fade-in">
+                            <div>
+                                <h3 class="font-bold text-slate-800 dark:text-zinc-200 text-base mb-1">Donanım Özellik Matrisi</h3>
+                                <p class="text-xs text-slate-400 dark:text-zinc-500 mb-6">ApexDrive Pro temel teknik özellikleri.</p>
+                            </div>
+                            
+                            <div class="space-y-4" id="hardware-specs-list">
+                                <div class="flex items-center justify-between py-2 border-b border-slate-100 dark:border-zinc-800/50">
+                                    <span class="text-xs font-semibold text-slate-500">Thunderbolt Çipi</span>
+                                    <span class="text-xs font-bold text-slate-880 text-slate-800 dark:text-zinc-200">Intel JHL8440 (TB4)</span>
+                                </div>
+                                <div class="flex items-center justify-between py-2 border-b border-slate-100 dark:border-zinc-800/50">
+                                    <span class="text-xs font-semibold text-slate-500">NVMe Controller</span>
+                                    <span class="text-xs font-bold text-slate-880 text-slate-800 dark:text-zinc-200">Phison PS5018-E18</span>
+                                </div>
+                                <div class="flex items-center justify-between py-2 border-b border-slate-100 dark:border-zinc-800/50">
+                                    <span class="text-xs font-semibold text-slate-500">Uyumlu M.2 Form Faktörü</span>
+                                    <span class="text-xs font-bold text-slate-880 text-slate-800 dark:text-zinc-200">M.2 2280 (PCIe 4.0 x4)</span>
+                                </div>
+                                <div class="flex items-center justify-between py-2 border-b border-slate-100 dark:border-zinc-800/50">
+                                    <span class="text-xs font-semibold text-slate-500">Pasif Isı Dağıtımı</span>
+                                    <span class="text-xs font-bold text-slate-880 text-slate-800 dark:text-zinc-200">Grafit Ped & Yivli CNC Gövde</span>
+                                </div>
+                                <div class="flex items-center justify-between py-2 border-b border-slate-100 dark:border-zinc-800/50">
+                                    <span class="text-xs font-semibold text-slate-500">Aktif Soğutma Fanı</span>
+                                    <span class="text-xs font-bold text-slate-880 text-slate-800 dark:text-zinc-200">Maglev 20mm Akıllı PWM Fan</span>
+                                </div>
+                                <div class="flex items-center justify-between py-2">
+                                    <span class="text-xs font-semibold text-slate-500">Video & Kart Yuvaları</span>
+                                    <span class="text-xs font-bold text-slate-880 text-slate-800 dark:text-zinc-200">HDMI 2.1 & SD Express 7.0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 5: Jira Backlog Sayfası -->
+                <div id="tab-backlog" class="tab-content animate-fade-in hidden space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <h2 class="text-2xl font-bold text-slate-900 dark:text-zinc-100 tracking-tight">Jira Backlog Verisi</h2>
+                            <p class="text-slate-500 dark:text-zinc-400 mt-1 text-sm">Jira uyumlu backlog listesi. Öncelikleri ayarlayın, Story Point'leri belirleyin ve Sprint'leri yönetin.</p>
+                        </div>
+                        <!-- Action Buttons -->
+                        <div class="flex flex-wrap gap-2.5">
+                            <button onclick="exportBacklog('csv')" class="bg-white dark:bg-zinc-900 hover:bg-slate-50 dark:hover:bg-zinc-800 text-slate-700 dark:text-zinc-300 border border-slate-200 dark:border-zinc-800 text-sm font-semibold px-4 py-2 rounded-xl transition duration-150 flex items-center space-x-2 shadow-sm">
+                                <i class="fa-solid fa-file-csv text-green-600"></i>
+                                <span>CSV Olarak Dışa Aktar</span>
+                            </button>
+                            <button onclick="exportBacklog('json')" class="bg-white dark:bg-zinc-900 hover:bg-slate-50 dark:hover:bg-zinc-800 text-slate-700 dark:text-zinc-300 border border-slate-200 dark:border-zinc-800 text-sm font-semibold px-4 py-2 rounded-xl transition duration-150 flex items-center space-x-2 shadow-sm">
+                                <i class="fa-solid fa-file-code text-blue-600"></i>
+                                <span>JSON Olarak Dışa Aktar</span>
+                            </button>
+                            <button onclick="openBacklogModal()" class="bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold px-4 py-2 rounded-xl transition duration-150 flex items-center space-x-2 shadow-md shadow-primary-200">
+                                <i class="fa-solid fa-plus"></i>
+                                <span>Yeni Jira Talebi</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Jira Backlog Table Container -->
+                    <div class="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl shadow-sm overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50 dark:bg-zinc-800/50 border-b border-slate-200 dark:border-zinc-800 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-zinc-400">
+                                        <th class="px-6 py-4">Jira Key</th>
+                                        <th class="px-6 py-4">Özet Tanım</th>
+                                        <th class="px-6 py-4">Öncelik</th>
+                                        <th class="px-6 py-4 text-center">Story Point (SP)</th>
+                                        <th class="px-6 py-4">Sprint</th>
+                                        <th class="px-6 py-4">Durum</th>
+                                        <th class="px-6 py-4 text-right">İşlemler</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100 dark:divide-zinc-800 text-sm text-slate-700 dark:text-zinc-300" id="backlog-table-body">
+                                    <!-- Dynamic rows loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <footer class="bg-white dark:bg-zinc-900 border-t border-slate-200 dark:border-zinc-800 p-6 text-center text-xs text-slate-400 dark:text-zinc-500 shrink-0">
+                <p>&copy; 2026 ApexDrive Pro - Proje Yönetim Portalı. Tüm Hakları Saklıdır.</p>
+            </footer>
+        </main>
+    </div>
+
+    <!-- TASK MODAL (ADD / EDIT) -->
+    <div id="task-modal" class="fixed inset-0 bg-slate-900/60 dark:bg-zinc-950/70 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white dark:bg-zinc-900 rounded-2xl max-w-lg w-full m-4 shadow-xl border border-slate-100 dark:border-zinc-800 overflow-hidden transform scale-95 transition-transform duration-300">
+            <!-- Modal Header -->
+            <div class="p-6 border-b border-slate-100 dark:border-zinc-800 flex justify-between items-center bg-slate-50/50 dark:bg-zinc-950/50">
+                <h3 class="font-bold text-slate-800 dark:text-zinc-100 text-lg" id="task-modal-title">Görev Ekle / Düzenle</h3>
+                <button onclick="closeTaskModal()" class="w-8 h-8 rounded-full hover:bg-slate-200 dark:hover:bg-zinc-800 flex items-center justify-center text-slate-400 hover:text-slate-600 transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <!-- Modal Form -->
+            <form id="task-form" onsubmit="saveTask(event)" class="p-6 space-y-4">
+                <input type="hidden" id="task-edit-index">
+                
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-zinc-400 mb-1.5" for="task-name">Görev Adı</label>
+                    <input type="text" id="task-name" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-850 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm dark:text-zinc-100">
+                </div>
+
+                <div id="task-parent-container">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-zinc-400 mb-1.5" for="task-parent">Üretim Aşaması / Grup</label>
+                    <select id="task-parent" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-850 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm dark:text-zinc-100">
+                        <!-- Populated dynamically -->
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-zinc-400 mb-1.5" for="task-assignee">Sorumlu Kişi</label>
+                        <select id="task-assignee" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-850 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm dark:text-zinc-100">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-zinc-400 mb-1.5" for="task-duration">Süre (Saat)</label>
+                        <input type="number" id="task-duration" min="1" max="24" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-850 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm dark:text-zinc-100">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-zinc-400 mb-1.5" for="task-dependency">Bağımlılık (Önceki Görev)</label>
+                        <select id="task-dependency" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-850 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm dark:text-zinc-100">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-zinc-400 mb-1.5" for="task-priority">Öncelik</label>
+                        <select id="task-priority" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-850 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm dark:text-zinc-100">
+                            <option value="Düşük">Düşük</option>
+                            <option value="Orta" selected>Orta</option>
+                            <option value="Yüksek">Yüksek</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-zinc-400 mb-1.5" for="task-status">Durum</label>
+                        <select id="task-status" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-850 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm dark:text-zinc-100">
+                            <option value="Bekliyor">Bekliyor</option>
+                            <option value="Devam Ediyor">Devam Ediyor</option>
+                            <option value="Tamamlandı">Tamamlandı</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center mt-6">
+                        <input type="checkbox" id="task-milestone" class="w-4.5 h-4.5 text-primary-600 dark:bg-zinc-800 border-slate-300 dark:border-zinc-700 rounded focus:ring-primary-500">
+                        <label class="ml-2 text-sm font-semibold text-slate-700 dark:text-zinc-300" for="task-milestone">Milestone Noktası Mı?</label>
+                    </div>
+                </div>
+
+                <!-- Footer buttons -->
+                <div class="pt-4 border-t border-slate-100 dark:border-zinc-800 flex justify-end space-x-3">
+                    <button type="button" onclick="closeTaskModal()" class="px-4 py-2.5 border border-slate-200 dark:border-zinc-700 text-slate-700 dark:text-zinc-300 text-sm font-semibold rounded-xl hover:bg-slate-50 dark:hover:bg-zinc-800 transition">Vazgeç</button>
+                    <button type="submit" class="px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-xl transition shadow-md shadow-primary-100 dark:shadow-none">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JIRA BACKLOG MODAL (ADD / EDIT) -->
+    <div id="backlog-modal" class="fixed inset-0 bg-slate-900/60 dark:bg-zinc-950/70 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white dark:bg-zinc-900 rounded-2xl max-w-lg w-full m-4 shadow-xl border border-slate-100 dark:border-zinc-800 overflow-hidden transform scale-95 transition-transform duration-300">
+            <!-- Modal Header -->
+            <div class="p-6 border-b border-slate-100 dark:border-zinc-800 flex justify-between items-center bg-slate-50/50 dark:bg-zinc-950/50">
+                <h3 class="font-bold text-slate-800 dark:text-zinc-100 text-lg" id="backlog-modal-title">Jira Talebi Ekle / Düzenle</h3>
+                <button onclick="closeBacklogModal()" class="w-8 h-8 rounded-full hover:bg-slate-200 dark:hover:bg-zinc-800 flex items-center justify-center text-slate-400 hover:text-slate-600 transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <!-- Modal Form -->
+            <form id="backlog-form" onsubmit="saveBacklog(event)" class="p-6 space-y-4">
+                <input type="hidden" id="backlog-edit-index">
+                
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="col-span-1">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-zinc-400 mb-1.5" for="backlog-key">Jira Key</label>
+                        <input type="text" id="backlog-key" placeholder="MT-10" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-850 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm uppercase dark:text-zinc-100">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-zinc-400 mb-1.5" for="backlog-summary">Özet Tanım</label>
+                        <input type="text" id="backlog-summary" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-850 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm dark:text-zinc-100">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-zinc-400 mb-1.5" for="backlog-priority">Öncelik</label>
+                        <select id="backlog-priority" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-850 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm dark:text-zinc-100">
+                            <option value="Düşük">Düşük</option>
+                            <option value="Orta" selected>Orta</option>
+                            <option value="Yüksek">Yüksek</option>
+                            <option value="Kritik">Kritik</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-zinc-400 mb-1.5" for="backlog-sp">Story Point (SP)</label>
+                        <input type="number" id="backlog-sp" min="1" max="13" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-850 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm dark:text-zinc-100">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-zinc-400 mb-1.5" for="backlog-sprint">Sprint</label>
+                        <input type="text" id="backlog-sprint" placeholder="Sprint 1" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-850 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm dark:text-zinc-100">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-zinc-400 mb-1.5" for="backlog-status">Durum</label>
+                        <select id="backlog-status" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-850 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm dark:text-zinc-100">
+                            <option value="To Do">To Do</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Done">Done</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Footer buttons -->
+                <div class="pt-4 border-t border-slate-100 dark:border-zinc-800 flex justify-end space-x-3">
+                    <button type="button" onclick="closeBacklogModal()" class="px-4 py-2.5 border border-slate-200 dark:border-zinc-700 text-slate-700 dark:text-zinc-300 text-sm font-semibold rounded-xl hover:bg-slate-50 dark:hover:bg-zinc-800 transition">Vazgeç</button>
+                    <button type="submit" class="px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-xl transition shadow-md shadow-primary-100 dark:shadow-none">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    <!-- RISK MODAL (ADD / EDIT) -->
+    <div id="risk-modal" class="fixed inset-0 bg-slate-900/60 dark:bg-zinc-950/70 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white dark:bg-zinc-900 rounded-2xl max-w-lg w-full m-4 shadow-xl border border-slate-100 dark:border-zinc-800 overflow-hidden transform scale-95 transition-transform duration-300">
+            <!-- Modal Header -->
+            <div class="p-6 border-b border-slate-100 dark:border-zinc-800 flex justify-between items-center bg-slate-50/50 dark:bg-zinc-950/50">
+                <h3 class="font-bold text-slate-800 dark:text-zinc-100 text-lg" id="risk-modal-title">Risk Ekle / Düzenle</h3>
+                <button onclick="closeRiskModal()" class="w-8 h-8 rounded-full hover:bg-slate-200 dark:hover:bg-zinc-800 flex items-center justify-center text-slate-400 hover:text-slate-600 transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <!-- Modal Form -->
+            <form id="risk-form" onsubmit="saveRisk(event)" class="p-6 space-y-4">
+                <input type="hidden" id="risk-edit-index">
+                
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-zinc-400 mb-1.5" for="risk-title">Risk Açıklaması / Tanımı</label>
+                    <input type="text" id="risk-title" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-850 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm dark:text-zinc-100">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-zinc-400 mb-1.5" for="risk-probability">Olasılık</label>
+                        <select id="risk-probability" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-850 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm dark:text-zinc-100">
+                            <option value="Düşük">Düşük</option>
+                            <option value="Orta" selected>Orta</option>
+                            <option value="Yüksek">Yüksek</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-zinc-400 mb-1.5" for="risk-impact">Etki Derecesi</label>
+                        <select id="risk-impact" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-850 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm dark:text-zinc-100">
+                            <option value="Düşük">Düşük</option>
+                            <option value="Orta">Orta</option>
+                            <option value="Yüksek" selected>Yüksek</option>
+                            <option value="Kritik">Kritik</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-zinc-400 mb-1.5" for="risk-mitigation">Önlem / Azaltma Planı</label>
+                    <textarea id="risk-mitigation" required rows="3" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-850 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm dark:text-zinc-100"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-zinc-400 mb-1.5" for="risk-status">Risk Durumu</label>
+                    <select id="risk-status" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-850 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm dark:text-zinc-100">
+                        <option value="Açık">Açık (Açık Risk)</option>
+                        <option value="Yönetiliyor" selected>Yönetiliyor (Önlemler Aktif)</option>
+                        <option value="Kapatıldı">Kapatıldı (Risk Geçti)</option>
+                    </select>
+                </div>
+
+                <!-- Footer buttons -->
+                <div class="pt-4 border-t border-slate-100 dark:border-zinc-800 flex justify-end space-x-3">
+                    <button type="button" onclick="closeRiskModal()" class="px-4 py-2.5 border border-slate-200 dark:border-zinc-700 text-slate-700 dark:text-zinc-300 text-sm font-semibold rounded-xl hover:bg-slate-50 dark:hover:bg-zinc-800 transition">Vazgeç</button>
+                    <button type="submit" class="px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-xl transition shadow-md shadow-primary-100 dark:shadow-none">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- SIMULATION RESULTS MODAL -->
+    <div id="simulation-modal" class="fixed inset-0 bg-slate-900/60 dark:bg-zinc-950/70 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white dark:bg-zinc-900 rounded-2xl max-w-md w-full m-4 shadow-xl border border-slate-100 dark:border-zinc-800 overflow-hidden transform scale-95 transition-transform duration-300">
+            <!-- Modal Header -->
+            <div class="p-6 border-b border-slate-100 dark:border-zinc-800 flex justify-between items-center bg-slate-50/50 dark:bg-zinc-950/50">
+                <h3 class="font-bold text-slate-800 dark:text-zinc-100 text-lg flex items-center">
+                    <i class="fa-solid fa-square-poll-vertical text-amber-500 mr-2.5"></i>Stres Test Raporu
+                </h3>
+                <button onclick="closeSimulationModal()" class="w-8 h-8 rounded-full hover:bg-slate-200 dark:hover:bg-zinc-800 flex items-center justify-center text-slate-400 hover:text-slate-600 transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <!-- Modal Content -->
+            <div class="p-6 space-y-6">
+                <div class="flex items-center space-x-4 p-4 bg-emerald-500/10 dark:bg-emerald-500/20 rounded-2xl border border-emerald-500/20">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500 text-white flex items-center justify-center text-2xl shadow-md">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-emerald-850 dark:text-emerald-400 text-sm">Stres Testi Başarıyla Tamamlandı!</h4>
+                        <p class="text-xs text-slate-500 dark:text-zinc-400 mt-0.5">Sürücü ve termal kontrol mekanizmaları stres testi sonuçları.</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center p-3.5 bg-slate-50 dark:bg-zinc-850/60 rounded-xl border border-slate-100 dark:border-zinc-800">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-950/30 text-indigo-650 dark:text-indigo-400 flex items-center justify-center text-base">
+                                <i class="fa-solid fa-temperature-high"></i>
+                            </div>
+                            <span class="text-sm font-semibold text-slate-600 dark:text-zinc-350">Maksimum Sıcaklık</span>
+                        </div>
+                        <span id="sim-result-production" class="font-extrabold text-slate-900 dark:text-zinc-100 text-base">42 °C</span>
+                    </div>
+
+                    <div class="flex justify-between items-center p-3.5 bg-slate-50 dark:bg-zinc-850/60 rounded-xl border border-slate-100 dark:border-zinc-800">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 rounded-lg bg-rose-50 dark:bg-rose-950/30 text-rose-650 dark:text-rose-450 flex items-center justify-center text-base">
+                                <i class="fa-solid fa-gauge-high"></i>
+                            </div>
+                            <span class="text-sm font-semibold text-slate-600 dark:text-zinc-350">Benchmark Hızı (Throttled)</span>
+                        </div>
+                        <span id="sim-result-defect" class="font-extrabold text-slate-900 dark:text-zinc-100 text-base">0 MB/s</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Footer buttons -->
+            <div class="p-6 border-t border-slate-100 dark:border-zinc-800 flex justify-end">
+                <button onclick="closeSimulationModal()" class="px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-xl transition shadow-md shadow-primary-100 dark:shadow-none">Tamam</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Tooltip Div for Gantt Chart -->
+    <div id="gantt-tooltip" class="gantt-tooltip hidden"></div>
+
+    <!-- Custom JavaScript App -->
+    <script src="app.js"></script>
+</body>
+</html>
