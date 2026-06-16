@@ -10,30 +10,49 @@ let projectTotalBudget = 850000;
 
 const CURRENT_DATA_VERSION = 'v8_apexdrive_pro_risk_fix';
 
-// Default WBS Task Structure: 4 Phases, 22 Subtasks, 45-Day Timeline
+
+```javascript
+// FAZ 1: BAŞLATMA VE PLANLAMA (Zaman Aralığı: G16-25)
 const defaultTasks = [
-    // FAZ 1: BAŞLATMA VE PLANLAMA (Zaman Aralığı: G16-25)
-    { id: "1", name: "Faz 1: Başlatma ve Planlama (Zaman Aralığı: G16-25)", isParent: true, parentId: null, collapsed: false, color: "#10b981", duration: 10, dependency: "Yok", assignee: "Batuhan Özdoğan", priority: "Orta", status: "Tamamlandı" },
-    { id: "1.1", name: "{
- title: "Instagram Reklamları"
-} ve rakip harici SSD/Hub benchmark testleri (Batuhan Özdoğan)", isParent: false, parentId: "1", collapsed: false, color: "#10b981", duration: 3, startDay: 16, dependency: "Yok", assignee: "Batuhan Özdoğan", priority: "Orta", status: "Tamamlandı", isMilestone: false },
-    { id: "1.2", name: "M1: Endüstriyel Tasarım ve Isı Dağılımı (CNC) Onayı (Halil İbrahim Kahraman)", isParent: false, parentId: "1", collapsed: false, color: "#10b981", duration: 1, startDay: 19, dependency: "1.1", assignee: "Halil İbrahim Kahraman", priority: "Yüksek", status: "Tamamlandı", isMilestone: true },
-    { id: "1.3", name: "Teknik Gereksinim Dokümanı ve Ürün Kapsam Bildirimi (Batuhan Özdoğan)", isParent: false, parentId: "1", collapsed: false, color: "#10b981", duration: 2, startDay: 19, dependency: "1.1", assignee: "Batuhan Özdoğan", priority: "Yüksek", status: "Tamamlandı", isMilestone: false },
-    { id: "1.4", name: "Kullanıcı persona tanımlamaları ve anket çalışmaları (Batuhan Özdoğan)", isParent: false, parentId: "1", collapsed: false, color: "#10b981", duration: 2, startDay: 19, dependency: "1.1", assignee: "Batuhan Özdoğan", priority: "Düşük", status: "Tamamlandı", isMilestone: false },
-    { id: "1.5", name: "Patent ve telif hakkı taramalarının yapılması (Halil İbrahim Kahraman)", isParent: false, parentId: "1", collapsed: false, color: "#10b981", duration: 1, startDay: 20, dependency: "1.2", assignee: "Halil İbrahim Kahraman", priority: "Orta", status: "Tamamlandı", isMilestone: false },
-    { id: "1.6", name: "Proje Başlatma Belgesinin (Project Charter) İmzalanması (Batuhan Özdoğan)", isParent: false, parentId: "1", collapsed: false, color: "#10b981", duration: 1, startDay: 21, dependency: "1.3", assignee: "Batuhan Özdoğan", priority: "Yüksek", status: "Tamamlandı", isMilestone: false },
-    { id: "1.7", name: "Paydaş analizi ve iletişim planının oluşturulması (Batuhan Özdoğan)", isParent: false, parentId: "1", collapsed: false, color: "#10b981", duration: 2, startDay: 22, dependency: "1.6", assignee: "Batuhan Özdoğan", priority: "Düşük", status: "Tamamlandı", isMilestone: false },
-    { id: "1.8", name: "Bütçe kırılım yapısının (CBS) ve maliyet hedeflerinin belirlenmesi (Batuhan Özdoğan)", isParent: false, parentId: "1", collapsed: false, color: "#10b981", duration: 1, startDay: 23, dependency: "1.6", assignee: "Batuhan Özdoğan", priority: "Yüksek", status: "Tamamlandı", isMilestone: false },
-    { id: "1.9", name: "Risk yönetim planı ve ilk risk matrisinin hazırlanması (Halil İbrahim Kahraman)", isParent: false, parentId: "1", collapsed: false, color: "#10b981", duration: 2, startDay: 24, dependency: "1.7", assignee: "Halil İbrahim Kahraman", priority: "Orta", status: "Tamamlandı", isMilestone: false },
+  {
+    id: "1",
+    name: "Faz 1: Başlatma ve Planlama (Zaman Aralığı: G16-25)",
+    isParent: true,
+    parentId: null,
+    collapsed: false,
+    color: "#10b981",
+    duration: 10,
+    dependency: "Yok",
+    assignee: "Süveyle Bayrak",
+    priority: "Orta",
+    status: "Tamamlandı"
+  }
+];
+{
+    id: "1.1",
+    name: "Instagram Reklamları ve rakip harici SSD/Hub benchmark testleri (Süveyle Bayrak)",
+    isParent: false,
+    parentId: "1",
+    collapsed: false,
+    color: "#10b981",
+    duration: 3,
+    startDay: 16,
+    dependency: "Yok",
+    assignee: "Süveyle Bayrak",
+    priority: "Orta",
+    status: "Tamamlandı",
+    isMilestone: false
+},
+```
 
     // FAZ 2: TASARIM VE DONANIM AR-GE (Zaman Aralığı: G26-40)
-    { id: "2", name: "Faz 2: Tasarım ve Donanım Ar-Ge (Zaman Aralığı: G26-40)", isParent: true, parentId: null, collapsed: true, color: "#3b82f6", duration: 15, dependency: "Yok", assignee: "Halil İbrahim Kahraman", priority: "Yüksek", status: "Devam Ediyor" },
-    { id: "2.1", name: "Alüminyum gövde 3D CAD çizimi ve termal simülasyon testleri (Halil İbrahim Kahraman)", isParent: false, parentId: "2", collapsed: false, color: "#3b82f6", duration: 5, startDay: 26, dependency: "1.9", assignee: "Halil İbrahim Kahraman", priority: "Kritik", status: "Devam Ediyor", isMilestone: false },
+    { id: "2", name: "Faz 2: Tasarım ve Donanım Ar-Ge (Zaman Aralığı: G26-40)", isParent: true, parentId: null, collapsed: true, color: "#3b82f6", duration: 15, dependency: "Yok", assignee: "yardımcı yazılımcı", priority: "Yüksek", status: "Devam Ediyor" },
+    { id: "2.1", name: "Alüminyum gövde 3D CAD çizimi ve termal simülasyon testleri (yardımcı yazılımcı)", isParent: false, parentId: "2", collapsed: false, color: "#3b82f6", duration: 5, startDay: 26, dependency: "1.9", assignee: "yardımcı yazılımcı", priority: "Kritik", status: "Devam Ediyor", isMilestone: false },
     { id: "2.2", name: "Intel Goshen Ridge tabanlı Thunderbolt 4 şematik tasarımı (Donanım Uzmanı)", isParent: false, parentId: "2", collapsed: false, color: "#3b82f6", duration: 4, startDay: 28, dependency: "1.9", assignee: "Donanım Uzmanı", priority: "Yüksek", status: "Devam Ediyor", isMilestone: false },
     { id: "2.3", name: "PCIe Gen4 hatları ve katmanlı PCB layout çizimi (Donanım Uzmanı)", isParent: false, parentId: "2", collapsed: false, color: "#3b82f6", duration: 5, startDay: 31, dependency: "2.1", assignee: "Donanım Uzmanı", priority: "Yüksek", status: "Bekliyor", isMilestone: false },
-    { id: "2.4", name: "M2: İlk Donanım Prototipi (PCB v1.0) Üretim Onayı (Halil İbrahim Kahraman)", isParent: false, parentId: "2", collapsed: false, color: "#3b82f6", duration: 1, startDay: 36, dependency: "2.3", assignee: "Halil İbrahim Kahraman", priority: "Yüksek", status: "Bekliyor", isMilestone: true },
+    { id: "2.4", name: "M2: İlk Donanım Prototipi (PCB v1.0) Üretim Onayı (yardımcı yazılımcı)", isParent: false, parentId: "2", collapsed: false, color: "#3b82f6", duration: 1, startDay: 36, dependency: "2.3", assignee: "yardımcı yazılımcı", priority: "Yüksek", status: "Bekliyor", isMilestone: true },
     { id: "2.5", name: "Sinyal bütünlüğü (SI) ve güç bütünlüğü (PI) simülasyonları (Donanım Uzmanı)", isParent: false, parentId: "2", collapsed: false, color: "#3b82f6", duration: 4, startDay: 36, dependency: "2.3", assignee: "Donanım Uzmanı", priority: "Orta", status: "Bekliyor", isMilestone: false },
-    { id: "2.6", name: "Komponent tedarik listesinin (BOM) kesinleştirilmesi (Batuhan Özdoğan)", isParent: false, parentId: "2", collapsed: false, color: "#3b82f6", duration: 2, startDay: 39, dependency: "2.5", assignee: "Batuhan Özdoğan", priority: "Orta", status: "Bekliyor", isMilestone: false },
+    { id: "2.6", name: "Komponent tedarik listesinin (BOM) kesinleştirilmesi (Süveyle Bayrak)", isParent: false, parentId: "2", collapsed: false, color: "#3b82f6", duration: 2, startDay: 39, dependency: "2.5", assignee: "Süveyle Bayrak", priority: "Orta", status: "Bekliyor", isMilestone: false },
 
     // FAZ 3: GÖMÜLÜ YAZILIM VE ENTEGRASYON (Zaman Aralığı: G41-50)
     { id: "3", name: "Faz 3: Gömülü Yazılım ve Entegrasyon (Zaman Aralığı: G41-50)", isParent: true, parentId: null, collapsed: true, color: "#a855f7", duration: 10, dependency: "Yok", assignee: "Kıdemli Geliştirici", priority: "Orta", status: "Bekliyor" },
@@ -41,22 +60,22 @@ const defaultTasks = [
     { id: "3.2", name: "TRIM ve Aşınma Dengeleme algoritmalarının entegrasyonu (Kıdemli Geliştirici)", isParent: false, parentId: "3", collapsed: false, color: "#a855f7", duration: 3, startDay: 44, dependency: "3.1", assignee: "Kıdemli Geliştirici", priority: "Orta", status: "Bekliyor", isMilestone: false },
     { id: "3.3", name: "Thunderbolt 4 köprü denetleyicisi firmware konfigürasyonu (Kıdemli Geliştirici)", isParent: false, parentId: "3", collapsed: false, color: "#a855f7", duration: 4, startDay: 45, dependency: "3.1", assignee: "Kıdemli Geliştirici", priority: "Yüksek", status: "Bekliyor", isMilestone: false },
     { id: "3.4", name: "macOS Plug-and-Play ve Windows Sürücü Uyumluluk Testleri (Kıdemli Geliştirici)", isParent: false, parentId: "3", collapsed: false, color: "#a855f7", duration: 3, startDay: 48, dependency: "3.3", assignee: "Kıdemli Geliştirici", priority: "Orta", status: "Bekliyor", isMilestone: false },
-    { id: "3.5", name: "M3: Firmware v1.0 Alpha Sürümünün Yayını (Batuhan Özdoğan)", isParent: false, parentId: "3", collapsed: false, color: "#a855f7", duration: 1, startDay: 50, dependency: "3.3", assignee: "Batuhan Özdoğan", priority: "Yüksek", status: "Bekliyor", isMilestone: true },
+    { id: "3.5", name: "M3: Firmware v1.0 Alpha Sürümünün Yayını (Süveyle Bayrak)", isParent: false, parentId: "3", collapsed: false, color: "#a855f7", duration: 1, startDay: 50, dependency: "3.3", assignee: "Süveyle Bayrak", priority: "Yüksek", status: "Bekliyor", isMilestone: true },
 
     // FAZ 4: TEST, KALİTE GÜVENCE VE KAPANIŞ (Zaman Aralığı: G51-60)
-    { id: "4", name: "Faz 4: Test, Kalite Güvence ve Kapanış (Zaman Aralığı: G51-60)", isParent: true, parentId: null, collapsed: true, color: "#f97316", duration: 10, dependency: "Yok", assignee: "Batuhan Özdoğan", priority: "Orta", status: "Bekliyor" },
-    { id: "4.1", name: "Sürekli yük altında termal throttling ve veri transfer stres testleri (Halil İbrahim Kahraman)", isParent: false, parentId: "4", collapsed: false, color: "#f97316", duration: 4, startDay: 51, dependency: "3.5", assignee: "Halil İbrahim Kahraman", priority: "Yüksek", status: "Bekliyor", isMilestone: false },
+    { id: "4", name: "Faz 4: Test, Kalite Güvence ve Kapanış (Zaman Aralığı: G51-60)", isParent: true, parentId: null, collapsed: true, color: "#f97316", duration: 10, dependency: "Yok", assignee: "Süveyle Bayrak", priority: "Orta", status: "Bekliyor" },
+    { id: "4.1", name: "Sürekli yük altında termal throttling ve veri transfer stres testleri (yardımcı yazılımcı)", isParent: false, parentId: "4", collapsed: false, color: "#f97316", duration: 4, startDay: 51, dependency: "3.5", assignee: "yardımcı yazılımcı", priority: "Yüksek", status: "Bekliyor", isMilestone: false },
     { id: "4.2", name: "Elektromanyetik Uyumluluk CE/FCC laboratuvar ön testleri (Donanım Uzmanı)", isParent: false, parentId: "4", collapsed: false, color: "#f97316", duration: 3, startDay: 53, dependency: "4.1", assignee: "Donanım Uzmanı", priority: "Orta", status: "Bekliyor", isMilestone: false },
-    { id: "4.3", name: "Düşme, darbe ve fiziksel dayanıklılık Donanım QA testleri (Halil İbrahim Kahraman)", isParent: false, parentId: "4", collapsed: false, color: "#f97316", duration: 2, startDay: 55, dependency: "4.1", assignee: "Halil İbrahim Kahraman", priority: "Orta", status: "Bekliyor", isMilestone: false },
+    { id: "4.3", name: "Düşme, darbe ve fiziksel dayanıklılık Donanım QA testleri (yardımcı yazılımcı)", isParent: false, parentId: "4", collapsed: false, color: "#f97316", duration: 2, startDay: 55, dependency: "4.1", assignee: "yardımcı yazılımcı", priority: "Orta", status: "Bekliyor", isMilestone: false },
     { id: "4.4", name: "Seri üretim öncesi son ürün paketleme ve kutu tasarımı onayı (Pazarlama / Ajans)", isParent: false, parentId: "4", collapsed: false, color: "#f97316", duration: 2, startDay: 56, dependency: "4.3", assignee: "Pazarlama / Ajans", priority: "Düşük", status: "Bekliyor", isMilestone: false },
-    { id: "4.5", name: "Proje Kapanış Raporunun hazırlanması ve kazanılan dersler dökümü (Batuhan Özdoğan)", isParent: false, parentId: "4", collapsed: false, color: "#f97316", duration: 3, startDay: 58, dependency: "4.4", assignee: "Batuhan Özdoğan", priority: "Orta", status: "Bekliyor", isMilestone: false },
-    { id: "4.6", name: "M4: Proje Başarı Onayı ve Seri Üretime Devir (Batuhan Özdoğan)", isParent: false, parentId: "4", collapsed: false, color: "#f97316", duration: 1, startDay: 60, dependency: "4.5", assignee: "Batuhan Özdoğan", priority: "Yüksek", status: "Bekliyor", isMilestone: true }
+    { id: "4.5", name: "Proje Kapanış Raporunun hazırlanması ve kazanılan dersler dökümü (Süveyle Bayrak)", isParent: false, parentId: "4", collapsed: false, color: "#f97316", duration: 3, startDay: 58, dependency: "4.4", assignee: "Süveyle Bayrak", priority: "Orta", status: "Bekliyor", isMilestone: false },
+    { id: "4.6", name: "M4: Proje Başarı Onayı ve Seri Üretime Devir (Süveyle Bayrak)", isParent: false, parentId: "4", collapsed: false, color: "#f97316", duration: 1, startDay: 60, dependency: "4.5", assignee: "Süveyle Bayrak", priority: "Yüksek", status: "Bekliyor", isMilestone: true }
 ];
 
 // Resource Allocation Table State (Sums to 850.000 TL total / 380.000 TL spent)
 const defaultTeam = [
-    { name: "Batuhan Özdoğan", role: "PM / Proje Yöneticisi", dailyRate: 2500, budget: 120000, spent: 50000, status: "Aktif" },
-    { name: "Halil İbrahim Kahraman", role: "Ar-Ge / Mekanik Tasarım", dailyRate: 2000, budget: 250000, spent: 150000, status: "Aktif" },
+    { name: "Süveyle Bayrak", role: "PM / Proje Yöneticisi", dailyRate: 2500, budget: 120000, spent: 50000, status: "Aktif" },
+    { name: "yardımcı yazılımcı", role: "Ar-Ge / Mekanik Tasarım", dailyRate: 2000, budget: 250000, spent: 150000, status: "Aktif" },
     { name: "Kıdemli Geliştirici", role: "Yazılım Ekibi", dailyRate: 1800, budget: 200000, spent: 80000, status: "Aktif" },
     { name: "Donanım Uzmanı", role: "Donanım Ekibi", dailyRate: 1600, budget: 180000, spent: 100000, status: "Aktif" },
     { name: "Pazarlama / Ajans", role: "Lansman & Pazarlama", dailyRate: 1200, budget: 100000, spent: 0, status: "Beklemede" }
