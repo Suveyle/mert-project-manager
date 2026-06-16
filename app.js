@@ -1,5 +1,3 @@
-// ApexDrive Pro - JS App Logic
-
 // --- STATE MANAGEMENT ---
 let tasks = [];
 let team = [];
@@ -10,40 +8,19 @@ let projectTotalBudget = 850000;
 
 const CURRENT_DATA_VERSION = 'v8_apexdrive_pro_risk_fix';
 
-
-```javascript
-// FAZ 1: BAŞLATMA VE PLANLAMA (Zaman Aralığı: G16-25)
+// Default WBS Task Structure: 4 Phases, 22 Subtasks, 45-Day Timeline
 const defaultTasks = [
-  {
-    id: "1",
-    name: "Faz 1: Başlatma ve Planlama (Zaman Aralığı: G16-25)",
-    isParent: true,
-    parentId: null,
-    collapsed: false,
-    color: "#10b981",
-    duration: 10,
-    dependency: "Yok",
-    assignee: "Süveyle Bayrak",
-    priority: "Orta",
-    status: "Tamamlandı"
-  }
-];
-{
-    id: "1.1",
-    name: "Instagram Reklamları ve rakip harici SSD/Hub benchmark testleri (Süveyle Bayrak)",
-    isParent: false,
-    parentId: "1",
-    collapsed: false,
-    color: "#10b981",
-    duration: 3,
-    startDay: 16,
-    dependency: "Yok",
-    assignee: "Süveyle Bayrak",
-    priority: "Orta",
-    status: "Tamamlandı",
-    isMilestone: false
-},
-```
+    // FAZ 1: BAŞLATMA VE PLANLAMA (Zaman Aralığı: G16-25)
+    { id: "1", name: "Faz 1: Başlatma ve Planlama (Zaman Aralığı: G16-25)", isParent: true, parentId: null, collapsed: false, color: "#10b981", duration: 10, dependency: "Yok", assignee: "Süveyle Bayrak", priority: "Orta", status: "Tamamlandı" },
+    { id: "1.1", name: "Pazar analizi ve rakip harici SSD/Hub benchmark testleri (Süveyle Bayrak)", isParent: false, parentId: "1", collapsed: false, color: "#10b981", duration: 3, startDay: 16, dependency: "Yok", assignee: "Süveyle Bayrak", priority: "Orta", status: "Tamamlandı", isMilestone: false },
+    { id: "1.2", name: "M1: Endüstriyel Tasarım ve Isı Dağılımı (CNC) Onayı (yardımcı yazılımcı)", isParent: false, parentId: "1", collapsed: false, color: "#10b981", duration: 1, startDay: 19, dependency: "1.1", assignee: "yardımcı yazılımcı", priority: "Yüksek", status: "Tamamlandı", isMilestone: true },
+    { id: "1.3", name: "Teknik Gereksinim Dokümanı ve Ürün Kapsam Bildirimi (Süveyle Bayrak)", isParent: false, parentId: "1", collapsed: false, color: "#10b981", duration: 2, startDay: 19, dependency: "1.1", assignee: "Süveyle Bayrak", priority: "Yüksek", status: "Tamamlandı", isMilestone: false },
+    { id: "1.4", name: "Kullanıcı persona tanımlamaları ve anket çalışmaları (Süveyle Bayrak)", isParent: false, parentId: "1", collapsed: false, color: "#10b981", duration: 2, startDay: 19, dependency: "1.1", assignee: "Süveyle Bayrak", priority: "Düşük", status: "Tamamlandı", isMilestone: false },
+    { id: "1.5", name: "Patent ve telif hakkı taramalarının yapılması (yardımcı yazılımcı)", isParent: false, parentId: "1", collapsed: false, color: "#10b981", duration: 1, startDay: 20, dependency: "1.2", assignee: "yardımcı yazılımcı", priority: "Orta", status: "Tamamlandı", isMilestone: false },
+    { id: "1.6", name: "Proje Başlatma Belgesinin (Project Charter) İmzalanması (Süveyle Bayrak)", isParent: false, parentId: "1", collapsed: false, color: "#10b981", duration: 1, startDay: 21, dependency: "1.3", assignee: "Süveyle Bayrak", priority: "Yüksek", status: "Tamamlandı", isMilestone: false },
+    { id: "1.7", name: "Paydaş analizi ve iletişim planının oluşturulması (Süveyle Bayrak)", isParent: false, parentId: "1", collapsed: false, color: "#10b981", duration: 2, startDay: 22, dependency: "1.6", assignee: "Süveyle Bayrak", priority: "Düşük", status: "Tamamlandı", isMilestone: false },
+    { id: "1.8", name: "Bütçe kırılım yapısının (CBS) ve maliyet hedeflerinin belirlenmesi (Süveyle Bayrak)", isParent: false, parentId: "1", collapsed: false, color: "#10b981", duration: 1, startDay: 23, dependency: "1.6", assignee: "Süveyle Bayrak", priority: "Yüksek", status: "Tamamlandı", isMilestone: false },
+    { id: "1.9", name: "Risk yönetim planı ve ilk risk matrisinin hazırlanması (yardımcı yazılımcı)", isParent: false, parentId: "1", collapsed: false, color: "#10b981", duration: 2, startDay: 24, dependency: "1.7", assignee: "yardımcı yazılımcı", priority: "Orta", status: "Tamamlandı", isMilestone: false },
 
     // FAZ 2: TASARIM VE DONANIM AR-GE (Zaman Aralığı: G26-40)
     { id: "2", name: "Faz 2: Tasarım ve Donanım Ar-Ge (Zaman Aralığı: G26-40)", isParent: true, parentId: null, collapsed: true, color: "#3b82f6", duration: 15, dependency: "Yok", assignee: "yardımcı yazılımcı", priority: "Yüksek", status: "Devam Ediyor" },
