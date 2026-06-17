@@ -1,3 +1,5 @@
+const currentDay = 24;
+
 // --- STATE MANAGEMENT ---
 let tasks = [];
 let team = [];
@@ -120,6 +122,44 @@ function initData() {
 }
 
 function saveToLocalStorage(type) {
+  function getActiveTasksToday() {
+
+    return tasks.filter(task => {
+
+        if (task.isParent) return false;
+
+        const endDay = task.startDay + task.duration - 1;
+
+        return (
+            currentDay >= task.startDay &&
+            currentDay <= endDay
+        );
+    });
+}
+
+function getIdleResources() {
+
+    const activePeople = new Set();
+
+    getActiveTasksToday().forEach(task => {
+        activePeople.add(task.assignee);
+    });
+
+    return team.filter(person =>
+        !activePeople.has(person.name)
+    );
+}
+
+function getUpcomingTasks() {
+
+    return tasks.filter(task => {
+
+        if (task.isParent) return false;
+
+        return task.startDay > currentDay;
+
+    }).slice(0,10);
+}  
     if (type === 'tasks' || !type) localStorage.setItem('masktrack_tasks', JSON.stringify(tasks));
     if (type === 'team' || !type) localStorage.setItem('masktrack_team', JSON.stringify(team));
     if (type === 'backlog' || !type) localStorage.setItem('masktrack_backlog', JSON.stringify(backlog));
@@ -331,6 +371,7 @@ let stagesChartInstance = null;
 let teamChartInstance = null;
 
 function updateDashboardUI() {
+    renderResourceDashboard();
     const { scheduledTasks, projectDuration } = computeSchedule();
     
     const elDuration = document.getElementById('kpi-duration');
@@ -2196,3 +2237,88 @@ function closeSimulationModal() {
     }, 300);
 }
 window.closeSimulationModal = closeSimulationModal;
+{
+ name:"PCB Tasarımı",
+ duration:5,
+ progress:30,
+ critical:true
+}
+function findIdlePeople(tasks,currentDay){
+
+ const activePeople=new Set();
+
+ tasks.forEach(task=>{
+
+   if(
+      currentDay>=task.start &&
+      currentDay<=task.end
+   ){
+      activePeople.add(task.owner);
+   }
+
+ });
+
+ return employees.filter(
+   person=>!activePeople.has(person)
+ );
+ function renderResourceDashboard() {
+
+    const idlePeople = getIdleResources();
+
+    const upcomingTasks = getUpcomingTasks();
+
+    const activeTasks = getActiveTasksToday();
+
+    const container =
+        document.getElementById('resource-dashboard');
+
+    if(!container) return;
+
+    container.innerHTML = `
+
+    <div class="resource-card">
+
+        <h3>📅 Bugün Aktif Görevler</h3>
+
+        ${
+            activeTasks.map(task => `
+                <div>
+                    ${task.name}
+                </div>
+            `).join('')
+        }
+
+    </div>
+
+    <div class="resource-card">
+
+        <h3>👤 Boşta Personel</h3>
+
+        ${
+            idlePeople.map(person => `
+                <div>
+                    ${person.name}
+                </div>
+            `).join('')
+        }
+
+    </div>
+
+    <div class="resource-card">
+
+        <h3>🚀 Yaklaşan İşler</h3>
+
+        ${
+            upcomingTasks.map(task => `
+                <div>
+                    G${task.startDay}
+                    - ${task.name}
+                </div>
+            `).join('')
+        }
+
+    </div>
+
+    `;
+}
+}
