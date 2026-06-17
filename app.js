@@ -2239,9 +2239,9 @@ function closeSimulationModal() {
 window.closeSimulationModal = closeSimulationModal;
 {
  name:"PCB Tasarımı",
- duration:5,
- progress:30,
- critical:true
+ duration;5,
+ progress;30,
+ critical;true
 }
 function findIdlePeople(tasks,currentDay){
 
